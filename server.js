@@ -1,12 +1,12 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const PORT = 8000
+const PORT = 8500
 
 app.use(cors())
 
 const aliens = {
-  humans: {
+  'humans': {
     speciesName: "Humans",
     homeworld: "Earth",
     features: "Rounded ears, hair on head and face (sometimes)",
@@ -16,7 +16,7 @@ const aliens = {
     image:
       "https://static.wikia.nocookie.net/aliens/images/6/68/The_City_on_the_Edge_of_Forever.jpg",
   },
-  vulcans: {
+  'vulcans': {
     speciesName: "Vulcans",
     homeworld: "Vulcan",
     features: "Pointed ears, upward-curving eyebrows",
@@ -26,7 +26,7 @@ const aliens = {
     image:
       "https://static.wikia.nocookie.net/aliens/images/7/75/Vulcans-FirstContact.jpg",
   },
-  klingons: {
+  'klingons': {
     speciesName: "Klingons",
     homeworld: "Qo'noS",
     features:
@@ -36,7 +36,7 @@ const aliens = {
     notableExamples: "Worf, Kor, Kang",
     image: "https://static.wikia.nocookie.net/aliens/images/7/74/Kruge.jpg",
   },
-  romulans: {
+  'romulans': {
     speciesName: "Romulans",
     homeworld: "Romulus",
     features:
@@ -46,7 +46,7 @@ const aliens = {
     notableExamples: "Pardek, Tal'aura, Narissa",
     image: "https://static.wikia.nocookie.net/aliens/images/1/1d/Zzzd7.jpg",
   },
-  borg: {
+  'borg': {
     speciesName: "(The) Borg",
     homeworld: "unknown (Delta Quadrant)",
     features:
@@ -56,7 +56,7 @@ const aliens = {
     notableExamples: "Borg Queen, Seven of Nine, Locutus",
     image: "https://static.wikia.nocookie.net/aliens/images/7/76/Borg.jpg",
   },
-  gorn: {
+  'gorn': {
     speciesName: "Gorn",
     homeworld: "unknown (Alpha Quadrant)",
     features:
@@ -66,7 +66,7 @@ const aliens = {
     notableExamples: "Gorn Captain",
     image: "https://static.wikia.nocookie.net/aliens/images/9/9b/Gorn.jpg",
   },
-  trill: {
+  'trill': {
     speciesName: "Trill",
     homeworld: "Trill",
     features:
@@ -90,4 +90,8 @@ app.get('/api/:alienName', (request, response) => {
     } else {
         response.json(aliens['humans'])
     }
+})
+
+app.listen(process.env.PORT || PORT, () => {
+    console.log('server is running! Better go catch it')
 })
