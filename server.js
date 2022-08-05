@@ -1,9 +1,16 @@
+
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const PORT = 8500
+const MongoClient = require('mongodb').MongoClient
 
-app.use(cors())
+let connectionString = process.env.DB_STRING;
+
+  
+  app.use(cors());
+app.use(express.json())
 
 const aliens = {
   'humans': {
@@ -82,15 +89,33 @@ app.get('/', (request, response) => {
     response.sendFile(__dirname + '/index.html')
 })
 
-app.get('/api/:alienName', (request, response) => {
+MongoClient.connect(connectionString, {
+  useUnifiedTopology: true,
+  useNewURLParser: true,
+}).then((client) => {
+  console.log("Connected to Database");
+  const db = client.db("star-trek-api");
+  const infoCollection = db.collection("alien-info");
+
+  app.get("/api/:alienName", (request, response) => {
     const aliensName = request.params.alienName.toLowerCase();
+    infoCollection
+      .find({ name: aliensName })
+      .toArray()
+      .then((results) => {
+        console.log(results);
+        response.json(results[0]);
+      })
+      .catch((error) => console.error(error));
 
     if (aliens[aliensName]) {
-        response.json(aliens[aliensName])
+      response.json(aliens[aliensName]);
     } else {
-        response.json(aliens['humans'])
+      response.json(aliens["humans"]);
     }
+  });
 })
+.catch(error => console.error(error))
 
 app.listen(process.env.PORT || PORT, () => {
     console.log('server is running! Better go catch it')
