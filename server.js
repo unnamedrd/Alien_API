@@ -9,10 +9,10 @@ const MongoClient = require('mongodb').MongoClient
 let connectionString = process.env.DB_STRING;
 
   
-  app.use(cors());
+app.use(cors());
 app.use(express.json())
 
-const aliens = {
+/*const aliens = {
   'humans': {
     speciesName: "Humans",
     homeworld: "Earth",
@@ -83,26 +83,24 @@ const aliens = {
     notableExamples: "Jadzia Dax, Ezri Dax, Curzon Dax",
     image: "https://static.wikia.nocookie.net/aliens/images/4/42/EzriDax.jpg",
   },
-};
+};*/
 
-app.get('/', (request, response) => {   
-    response.sendFile(__dirname + '/index.html')
-})
 
-MongoClient.connect(connectionString, {
-  useUnifiedTopology: true,
-  useNewURLParser: true,
-}).then((client) => {
+MongoClient.connect(connectionString)
+  .then((client) => {
   console.log("Connected to Database");
   const db = client.db("star-trek-api");
-  const infoCollection = db.collection("alien-info");
+    const infoCollection = db.collection("alien-info");
+    
+
+app.get("/", (request, response) => {
+  response.sendFile(__dirname + "/index.html");
+})
 
   app.get("/api/:alienName", (request, response) => {
     const aliensName = request.params.alienName.toLowerCase();
-    infoCollection
-      .find({ name: aliensName })
-      .toArray()
-      .then((results) => {
+    infoCollection.find({ name: aliensName }).toArray()
+      .then(results => {
         console.log(results);
         response.json(results[0]);
       })
