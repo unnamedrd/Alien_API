@@ -106,11 +106,11 @@ app.get("/", (request, response) => {
       })
       .catch((error) => console.error(error));
 
-    if (aliens[aliensName]) {
+    /*if (aliens[aliensName]) {
       response.json(aliens[aliensName]);
     } else {
       response.json(aliens["humans"]);
-    }
+    }*/
   });
 })
 .catch(error => console.error(error))
